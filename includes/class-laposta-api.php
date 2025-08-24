@@ -78,8 +78,27 @@ class Laposta_Api_Client {
         $name = isset($c['name']) ? $c['name'] : (isset($c['title']) ? $c['title'] : '');
         $subject = isset($c['subject']) ? $c['subject'] : '';
         $status = isset($c['state']) ? $c['state'] : (isset($c['status']) ? $c['status'] : '');
-        $webversion_url = isset($c['webversion']) ? $c['webversion'] : (isset($c['webversion_url']) ? $c['webversion_url'] : '');
-        $screenshot_url = isset($c['screenshot']) ? $c['screenshot'] : (isset($c['screenshot_url']) ? $c['screenshot_url'] : '');
+        // Web version URL can be in 'web', 'webversion', or 'webversion_url'
+        $webversion_url = '';
+        if (!empty($c['web'])) {
+            $webversion_url = $c['web'];
+        } elseif (!empty($c['webversion'])) {
+            $webversion_url = $c['webversion'];
+        } elseif (!empty($c['webversion_url'])) {
+            $webversion_url = $c['webversion_url'];
+        }
+
+        // Screenshot may be a string URL or an object of sizes
+        $screenshot_url = '';
+        if (isset($c['screenshot'])) {
+            if (is_string($c['screenshot'])) {
+                $screenshot_url = $c['screenshot'];
+            } elseif (is_array($c['screenshot'])) {
+                $screenshot_url = $this->pick_best_screenshot_url($c['screenshot']);
+            }
+        } elseif (!empty($c['screenshot_url'])) {
+            $screenshot_url = $c['screenshot_url'];
+        }
 
         // Prefer delivery timestamps for sent status
         $delivery_started = isset($c['delivery_started']) ? $c['delivery_started'] : '';
@@ -109,6 +128,33 @@ class Laposta_Api_Client {
             'delivery_started' => $delivery_started,
             'delivery_ended' => $delivery_ended,
         );
+    }
+
+    private function pick_best_screenshot_url($sizes) {
+        // $sizes is an associative array like ['113x134' => url, '226x268' => url]
+        $best = '';
+        $best_area = 0;
+        foreach ($sizes as $key => $url) {
+            if (!is_string($url) || $url === '') {
+                continue;
+            }
+            // Try to parse WxH from key
+            if (preg_match('/(\d+)x(\d+)/', (string) $key, $m)) {
+                $w = (int) $m[1];
+                $h = (int) $m[2];
+                $area = $w * $h;
+                if ($area > $best_area) {
+                    $best_area = $area;
+                    $best = $url;
+                }
+            } else {
+                // If no size info, pick the first non-empty
+                if ($best === '') {
+                    $best = $url;
+                }
+            }
+        }
+        return $best;
     }
 }
 

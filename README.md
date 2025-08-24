@@ -69,6 +69,7 @@ GPL-2.0-or-later
 
 ## Changelog
 
+- 1.0.3: Use 'web' field for webversion URL; choose best screenshot size from object
 - 1.0.2: Publish detection via delivery_started/delivery_ended; add release zip workflow
 - 1.0.1: Only show published/sent, list uses UL/LI with title link to web version
 - 1.0.0: Initial release
