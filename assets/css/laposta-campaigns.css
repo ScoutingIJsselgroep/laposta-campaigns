@@ -1,0 +1,14 @@
+.laposta-campaigns { margin: 1rem 0; }
+.laposta-campaigns .laposta-group { margin-bottom: 2rem; }
+.laposta-campaigns .laposta-group-title { margin: 0 0 .5rem; }
+.laposta-campaigns .laposta-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
+.laposta-campaigns .laposta-item { border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; background: #fff; }
+.laposta-campaigns .laposta-item-inner { display: flex; flex-direction: column; height: 100%; }
+.laposta-campaigns .laposta-item-image { width: 100%; height: auto; display: block; }
+.laposta-campaigns .laposta-item-content { padding: .75rem .9rem; display: grid; gap: .25rem; }
+.laposta-campaigns .laposta-item-title { font-size: 1rem; margin: 0; }
+.laposta-campaigns .laposta-item-subject { color: #334155; font-size: .9rem; }
+.laposta-campaigns .laposta-item-date { color: #64748b; font-size: .85rem; }
+.laposta-campaigns .laposta-campaigns-error { color: #b91c1c; }
+
+
