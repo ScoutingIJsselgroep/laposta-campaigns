@@ -69,4 +69,5 @@ GPL-2.0-or-later
 
 ## Changelog
 
+- 1.0.1: Only show published/sent, list uses UL/LI with title link to web version
 - 1.0.0: Initial release

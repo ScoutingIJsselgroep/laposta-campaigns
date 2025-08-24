@@ -40,6 +40,11 @@ class Laposta_Campaigns_Plugin {
         $year_filter = trim((string) $atts['year']) !== '' ? (int) $atts['year'] : null;
 
         $campaigns = array_values(array_filter($campaigns, function ($c) use ($include_name_terms, $exclude_name_terms, $include_subject_terms, $exclude_subject_terms, $year_filter) {
+            // Only published/sent
+            if (!$this->is_published($c)) {
+                return false;
+            }
+
             // Year filter
             if ($year_filter !== null) {
                 if (!isset($c['year']) || (int) $c['year'] !== $year_filter) {
@@ -97,25 +102,18 @@ class Laposta_Campaigns_Plugin {
         echo '<div class="laposta-campaigns">';
 
         if (strtolower($atts['group_by']) === 'year') {
-            $groups = array();
+            // Single UL with year label LIs (no headings)
+            echo '<ul class="laposta-list">';
+            $current_year = null;
             foreach ($campaigns as $c) {
                 $y = isset($c['year']) && $c['year'] ? $c['year'] : __('Unknown', 'laposta-campaigns');
-                if (!isset($groups[$y])) {
-                    $groups[$y] = array();
+                if ($current_year !== $y) {
+                    $current_year = $y;
+                    echo '<li class="laposta-year">' . esc_html((string) $current_year) . '</li>';
                 }
-                $groups[$y][] = $c;
+                $this->render_item($c, $show_screenshot);
             }
-
-            foreach ($groups as $year => $items) {
-                echo '<div class="laposta-group">';
-                echo '<h3 class="laposta-group-title">' . esc_html((string) $year) . '</h3>';
-                echo '<ul class="laposta-list">';
-                foreach ($items as $c) {
-                    $this->render_item($c, $show_screenshot);
-                }
-                echo '</ul>';
-                echo '</div>';
-            }
+            echo '</ul>';
         } else {
             echo '<ul class="laposta-list">';
             foreach ($campaigns as $c) {
@@ -150,12 +148,12 @@ class Laposta_Campaigns_Plugin {
         }
 
         echo '<div class="laposta-item-content">';
-        if ($title) {
-            if ($url) {
-                echo '<h4 class="laposta-item-title"><a href="' . esc_url($url) . '" target="_blank" rel="noopener noreferrer">' . esc_html($title) . '</a></h4>';
-            } else {
-                echo '<h4 class="laposta-item-title">' . esc_html($title) . '</h4>';
-            }
+        // Title link (no heading tags)
+        $link_text = $title !== '' ? $title : __('Webversie', 'laposta-campaigns');
+        if ($url) {
+            echo '<a class="laposta-item-title" href="' . esc_url($url) . '" target="_blank" rel="noopener noreferrer">' . esc_html($link_text) . '</a>';
+        } else {
+            echo '<span class="laposta-item-title">' . esc_html($link_text) . '</span>';
         }
         if ($subject) {
             echo '<div class="laposta-item-subject">' . esc_html($subject) . '</div>';
@@ -167,6 +165,24 @@ class Laposta_Campaigns_Plugin {
 
         echo '</div>';
         echo '</li>';
+    }
+
+    private function is_published($c) {
+        $status = '';
+        if (isset($c['status']) && is_string($c['status'])) {
+            $status = $c['status'];
+        }
+        $status = mb_strtolower((string) $status);
+        $allowed = apply_filters('laposta_campaigns_published_statuses', array('sent', 'published', 'live', 'public', 'verzonden'));
+        $allowed = array_map('mb_strtolower', (array) $allowed);
+        if ($status !== '' && in_array($status, $allowed, true)) {
+            return true;
+        }
+        // Fallback: consider published if webversion URL exists
+        if (!empty($c['webversion_url'])) {
+            return true;
+        }
+        return false;
     }
 
     private function parse_terms($raw) {
