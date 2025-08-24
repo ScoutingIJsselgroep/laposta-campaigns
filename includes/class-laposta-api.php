@@ -81,11 +81,17 @@ class Laposta_Api_Client {
         $webversion_url = isset($c['webversion']) ? $c['webversion'] : (isset($c['webversion_url']) ? $c['webversion_url'] : '');
         $screenshot_url = isset($c['screenshot']) ? $c['screenshot'] : (isset($c['screenshot_url']) ? $c['screenshot_url'] : '');
 
-        $date_raw = null;
-        foreach (array('sent_date', 'sent_on', 'date', 'scheduled_for', 'created') as $key) {
-            if (!empty($c[$key])) {
-                $date_raw = $c[$key];
-                break;
+        // Prefer delivery timestamps for sent status
+        $delivery_started = isset($c['delivery_started']) ? $c['delivery_started'] : '';
+        $delivery_ended = isset($c['delivery_ended']) ? $c['delivery_ended'] : '';
+
+        $date_raw = $delivery_ended ?: $delivery_started;
+        if (!$date_raw) {
+            foreach (array('sent_date', 'sent_on', 'date', 'scheduled_for', 'created') as $key) {
+                if (!empty($c[$key])) {
+                    $date_raw = $c[$key];
+                    break;
+                }
             }
         }
         $timestamp = $date_raw ? strtotime($date_raw) : null;
@@ -100,6 +106,8 @@ class Laposta_Api_Client {
             'date_raw' => $date_raw,
             'timestamp' => $timestamp,
             'year' => $timestamp ? (int) date('Y', $timestamp) : null,
+            'delivery_started' => $delivery_started,
+            'delivery_ended' => $delivery_ended,
         );
     }
 }

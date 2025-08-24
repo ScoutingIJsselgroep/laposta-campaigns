@@ -168,6 +168,10 @@ class Laposta_Campaigns_Plugin {
     }
 
     private function is_published($c) {
+        // Sent if delivery timestamps exist
+        if (!empty($c['delivery_started']) || !empty($c['delivery_ended'])) {
+            return true;
+        }
         $status = '';
         if (isset($c['status']) && is_string($c['status'])) {
             $status = $c['status'];

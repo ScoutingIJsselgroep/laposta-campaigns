@@ -3,7 +3,7 @@ Contributors: scoutingijsselgroep
 Tags: laposta, newsletter, campaigns, shortcode
 Requires at least: 5.8
 Tested up to: 6.6
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -62,6 +62,9 @@ In your Laposta account. See the documentation: https://api.laposta.nl/doc/index
 Yes, filter `laposta_campaigns_cache_ttl` (seconds).
 
 == Changelog ==
+
+= 1.0.2 =
+Publish detection via delivery_started/delivery_ended; add release zip workflow
 
 = 1.0.1 =
 Only show published/sent; switch to UL/LI; title links to web version
