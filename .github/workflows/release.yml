@@ -19,7 +19,7 @@ jobs:
           PLUGIN_SLUG="laposta-campaigns"
           WORKDIR="dist/${PLUGIN_SLUG}"
           mkdir -p "$WORKDIR"
-          rsync -av --exclude ".git" --exclude ".github" --exclude "dist" --exclude ".DS_Store" --exclude "node_modules" ./ "$WORKDIR"/
+          rsync -av --exclude ".git" --exclude ".github" --exclude ".context" --exclude "dist" --exclude ".DS_Store" --exclude "node_modules" ./ "$WORKDIR"/
           cd dist
           zip -r "${PLUGIN_SLUG}.zip" "${PLUGIN_SLUG}"
           echo "artifact=dist/${PLUGIN_SLUG}.zip" >> $GITHUB_OUTPUT

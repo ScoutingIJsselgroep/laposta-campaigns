@@ -1,17 +1,18 @@
 === Laposta Campaigns ===
 Contributors: scoutingijsselgroep
-Tags: laposta, newsletter, campaigns, shortcode
+Tags: laposta, newsletter, campaigns, shortcode, email
 Requires at least: 5.8
-Tested up to: 6.6
-Stable tag: 1.0.3
+Tested up to: 6.7
+Requires PHP: 7.4
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-List Laposta campaigns anywhere via a shortcode, with filtering and optional grouping by year.
+Display Laposta email campaigns on your WordPress site via a shortcode, with filtering and optional grouping by year.
 
 == Description ==
 
-This plugin lists Laposta campaigns via shortcode. Configure your Laposta API key under Settings → Laposta Campaigns.
+Display your Laposta email campaigns anywhere on your WordPress site using a simple shortcode. Configure your Laposta API key under Settings → Laposta Campaigns and you're ready to go.
 
 Shortcode: `[laposta_campaigns]`
 
@@ -56,12 +57,15 @@ Examples:
 == Frequently Asked Questions ==
 
 = Where do I get the API key? =
-In your Laposta account. See the documentation: https://api.laposta.nl/doc/index.nl.php
+In your Laposta account under the API section. See the documentation: https://api.laposta.nl/doc/
 
 = Can I change the cache duration? =
 Yes, filter `laposta_campaigns_cache_ttl` (seconds).
 
 == Changelog ==
+
+= 1.1.0 =
+Polish for broader use: English default strings with i18n support, improved admin settings page with cache control, better accessibility and empty state handling, uninstall cleanup
 
 = 1.0.3 =
 Use 'web' field for webversion URL; choose best screenshot size from object

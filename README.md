@@ -1,10 +1,11 @@
 # Laposta Campaigns (WordPress plugin)
 
-List Laposta campaigns anywhere via a shortcode, with filtering and optional grouping by year.
+Display your Laposta email campaigns on any WordPress site using a simple shortcode, with filtering and optional grouping by year.
 
 - Shortcode: `[laposta_campaigns]`
-- Settings: set your Laposta API key under Settings → Laposta Campaigns
-- Uses Laposta API v2 `GET /campaign` with Basic Auth
+- Settings: configure your Laposta API key under **Settings → Laposta Campaigns**
+- Uses Laposta API v2 (`GET /campaign`) with Basic Auth
+- Translation-ready (English default, i18n via `load_plugin_textdomain`)
 
 ## Features
 
@@ -60,8 +61,9 @@ add_filter('laposta_campaigns_cache_ttl', function () { return 60; });
 
 ## Notes
 
-- API: `https://api.laposta.nl/doc/index.nl.php`
+- API documentation: `https://api.laposta.nl/doc/`
 - Endpoint used: `GET https://api.laposta.nl/v2/campaign`
+- Requires PHP 7.4+, WordPress 5.8+
 
 ## License
 
@@ -69,6 +71,7 @@ GPL-2.0-or-later
 
 ## Changelog
 
+- 1.1.0: Polish for broader use — English default strings, i18n support, admin cache control, accessibility, uninstall cleanup
 - 1.0.3: Use 'web' field for webversion URL; choose best screenshot size from object
 - 1.0.2: Publish detection via delivery_started/delivery_ended; add release zip workflow
 - 1.0.1: Only show published/sent, list uses UL/LI with title link to web version

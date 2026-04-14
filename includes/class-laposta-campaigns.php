@@ -101,6 +101,12 @@ class Laposta_Campaigns_Plugin {
         ob_start();
         echo '<div class="laposta-campaigns">';
 
+        if (empty($campaigns)) {
+            echo '<p class="laposta-empty">' . esc_html__('No campaigns found.', 'laposta-campaigns') . '</p>';
+            echo '</div>';
+            return ob_get_clean();
+        }
+
         if (strtolower($atts['group_by']) === 'year') {
             // Single UL with year label LIs (no headings)
             echo '<ul class="laposta-list">';
@@ -149,7 +155,7 @@ class Laposta_Campaigns_Plugin {
 
         echo '<div class="laposta-item-content">';
         // Title link (no heading tags)
-        $link_text = $title !== '' ? $title : __('Webversie', 'laposta-campaigns');
+        $link_text = $title !== '' ? $title : __('View online', 'laposta-campaigns');
         if ($url) {
             echo '<a class="laposta-item-title" href="' . esc_url($url) . '" target="_blank" rel="noopener noreferrer">' . esc_html($link_text) . '</a>';
         } else {
