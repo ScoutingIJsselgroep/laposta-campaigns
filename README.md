@@ -51,12 +51,33 @@ Examples:
 
 ## Filters
 
-- `laposta_campaigns_cache_ttl` (int seconds): adjust caching TTL.
+### `laposta_campaigns_cache_ttl`
 
-Example:
+Change the cache duration (default: 300 seconds / 5 minutes). You can also clear the cache manually from the settings page.
 
 ```php
-add_filter('laposta_campaigns_cache_ttl', function () { return 60; });
+add_filter('laposta_campaigns_cache_ttl', function () { return 60; }); // 1 minute
+```
+
+### `laposta_campaigns_published_statuses`
+
+Customize which campaign statuses are considered "published". Default: `sent`, `published`, `live`, `public`, `verzonden`. Campaigns with delivery timestamps or a web version URL are always shown regardless of this filter.
+
+```php
+add_filter('laposta_campaigns_published_statuses', function ($statuses) {
+    $statuses[] = 'completed';
+    return $statuses;
+});
+```
+
+### `laposta_campaigns_html`
+
+Modify the final HTML output of the shortcode. Receives the HTML string, the array of campaign data, and the shortcode attributes.
+
+```php
+add_filter('laposta_campaigns_html', function ($html, $campaigns, $atts) {
+    return '<div class="my-wrapper">' . $html . '</div>';
+}, 10, 3);
 ```
 
 ## Notes
